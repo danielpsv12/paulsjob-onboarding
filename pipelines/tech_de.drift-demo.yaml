@@ -1,0 +1,82 @@
+name: Tech Recruiting DE
+description: DRIFT DEMO - deliberately differs from what is live, to show what the
+  verification reports. Not meant to be created; use it with 'verify'.
+is_default: true
+pipeline_without_ai: false
+steps:
+- name: Neu
+  category: New
+  color: '#C9D5E3'
+- name: Vorauswahl
+  category: PreScreening
+  color: '#9BD9B0'
+  agent:
+    name: Vorauswahl-Agent
+    type: reactive
+    description: Stellt Rückfragen zu Pflichtkriterien und sortiert offensichtlich
+      unpassende Profile aus.
+    human_in_loop: always_on
+    active: true
+    instructions: 'Du führst die Vorauswahl für eine technische Position durch.
+
+
+      Prüfe in dieser Reihenfolge:
+
+      1. Erfüllt die Person die Pflichtkriterien der Ausschreibung?
+
+      2. Ist ein Arbeitsort in Deutschland oder Remote-EU möglich?
+
+      3. Ist der früheste Eintrittstermin innerhalb der nächsten sechs Monate?
+
+
+      Stelle höchstens drei Rückfragen und formuliere sie einzeln, nicht als Liste.
+
+      Wenn eine Antwort ausbleibt, hake genau einmal nach.
+
+      Triff keine Absage-Entscheidung allein aufgrund einer Lücke im Lebenslauf.
+
+      '
+- name: KI-Interview
+  category: AIVoiceInterview
+  color: '#8ECAE6'
+  agent:
+    name: Interview-Agent
+    type: proactive
+    description: Führt das strukturierte Erstinterview und protokolliert die Antworten.
+    human_in_loop: always_off
+    active: true
+    additional_fields:
+      InterviewLanguage: auto
+      GreetingInstructions: 'Begrüße die Person mit Namen, nenne die Position und
+        sag, dass das
+
+        Gespräch etwa 15 Minuten dauert und aufgezeichnet wird.
+
+        Frage, ob es gerade passt, und biete sonst einen anderen Termin an.
+
+        '
+      EndOfCallProcedure: 'Fasse in zwei Sätzen zusammen, was besprochen wurde.
+
+        Nenne als nächsten Schritt die Rückmeldung innerhalb von fünf Werktagen.
+
+        Bedanke dich und beende das Gespräch, ohne eine Einschätzung abzugeben.
+
+        '
+    instructions: Kurzes Interview führen.
+- name: Fachgespräch
+  category: HumanInterview
+  color: '#FFB703'
+- name: Teamentscheidung
+  category: TeamDiscussion
+  color: '#FFD59E'
+  agent:
+    name: Entscheidungs-Agent
+    type: reactive
+    human_in_loop: always_off
+    instructions: Fasse die Bewertungen des Teams zusammen.
+- name: Vertragsangebot
+  category: ContractOffer
+  color: '#B7E4C7'
+- name: Abgelehnt
+  category: Rejected
+  color: '#E5989B'

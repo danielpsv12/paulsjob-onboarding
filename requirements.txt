@@ -1,0 +1,7 @@
+requests>=2.31
+PyYAML>=6.0
+
+# Only needed on machines where antivirus or a corporate proxy inspects TLS.
+# It makes Python verify certificates through the OS trust store instead of
+# OpenSSL's own logic. Certificate verification stays enabled.
+truststore>=0.9

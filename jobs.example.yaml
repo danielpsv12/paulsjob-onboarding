@@ -1,0 +1,81 @@
+# The list a customer hands over at kickoff, usually exported from their own ATS.
+#
+# `external_id` is the customer's own job id. It is what makes this file safe to
+# re-run: the tool looks the job up by external id before creating anything, so
+# running twice does not create twice.
+#
+# category / career_level / employment_type / working_hours accept the words a
+# customer actually writes. They are resolved against the live reference lists,
+# and an unknown value fails with the list of valid options instead of a 422.
+
+customer: "Beispiel GmbH"
+
+jobs:
+  - external_id: "BSP-2026-001"
+    title: "Senior Backend Engineer (m/w/d)"
+    internal_name: "BE01 - Senior Backend"
+    location: "Berlin"
+    region: "EMEA"
+    # Mixed on purpose: a localised name here, an ID below - both resolve.
+    category: "IT"
+    career_level: "Oberstufe"
+    working_hours: "FullTime"
+    # Test data stays unpublished: this account feeds public job XML endpoints
+    # (/job/xml-feed/stepstone), and demo jobs have no business showing up there.
+    published: false
+    description: |
+      Wir suchen eine erfahrene Backend-Entwicklerin oder einen erfahrenen
+      Backend-Entwickler für unsere Plattform.
+
+      Aufgaben:
+      - Entwurf und Betrieb von Services in Go und Python
+      - Ausbau unserer REST-Schnittstellen
+      - Code Reviews und technische Abstimmung im Team
+
+      Anforderungen:
+      - mindestens fünf Jahre Erfahrung in der Backend-Entwicklung
+      - sicherer Umgang mit relationalen Datenbanken
+      - Deutsch mindestens B2
+
+  - external_id: "BSP-2026-002"
+    title: "Werkstudent Datenanalyse (m/w/d)"
+    internal_name: "DA02 - Werkstudent"
+    location: "Remote"
+    category: "IT"
+    career_level: "Einstiegsniveau"
+    employment_type: "Werkstudent"
+    working_hours: "Teilzeit"
+    published: false
+    # The structured form. `description` also accepts one plain text block, as
+    # in the job above - that is what a customer's ATS export usually contains.
+    description:
+      requirements: |
+        Unterstützung unseres Analytics-Teams bei Auswertungen und Reports.
+
+        Aufgaben:
+        - Auswertungen in SQL
+        - Aufbereitung wiederkehrender Reports
+        - Mitarbeit an der Datenqualität
+
+        Anforderungen:
+        - laufendes Studium mit quantitativem Schwerpunkt
+        - erste Erfahrung mit SQL
+        - 16 bis 20 Stunden pro Woche
+      ideal_candidate: |
+        Du arbeitest sorgfältig, fragst nach, wenn Zahlen nicht plausibel wirken,
+        und kannst Ergebnisse verständlich aufschreiben.
+      about_company: |
+        Die Beispiel GmbH ist ein mittelständisches Unternehmen mit rund
+        200 Mitarbeitenden und Sitz in Berlin.
+
+  # Deliberately broken: the working hours value does not exist. The run reports
+  # this job as failed, lists the valid options, and still onboards the others.
+  - external_id: "BSP-2026-003"
+    title: "Head of Engineering (m/w/d)"
+    location: "Berlin"
+    category: "IT"
+    career_level: "C-Level"
+    working_hours: "Vollzeit (40h)"
+    published: false
+    description: |
+      Führung unseres Engineering-Bereichs mit derzeit drei Teams.

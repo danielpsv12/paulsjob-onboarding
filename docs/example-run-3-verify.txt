@@ -1,0 +1,26 @@
+========================================================================
+Paul's Job onboarding run
+correlation id : 70ca9e69-08fd-42db-947d-cea3872914a7
+customer       : Beispiel GmbH
+mode           : verify only - nothing is created or changed
+========================================================================
+
+Jobs (3)
+
+  [OK  ] BSP-2026-001 - Senior Backend Engineer (m/w/d)
+         job id: 182687
+         checked 7 steps
+
+  [OK  ] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
+         job id: 182688
+         checked 7 steps
+
+  [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
+         error: job does not exist
+
+------------------------------------------------------------------------
+ready: 2   needs attention: 1
+
+Not ready to go live:
+  - BSP-2026-003: job does not exist
+------------------------------------------------------------------------

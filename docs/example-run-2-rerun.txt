@@ -1,0 +1,45 @@
+========================================================================
+Paul's Job onboarding run
+correlation id : 0e1c4749-fcc4-45f2-ba5d-53d60aa33e59
+customer       : Beispiel GmbH
+pipeline       : Tech Recruiting DE
+credits        : 997.36 remaining
+========================================================================
+
+Pipeline template
+  template 'Tech Recruiting DE' already exists (01a07d00-9069-73a3-883b-a11f8135d7af) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Vorauswahl' [PreScreening] already present
+      = agent 'Vorauswahl-Agent' already present
+    = step 'KI-Interview' [AIVoiceInterview] already present
+      = agent 'Interview-Agent' already present
+    = step 'Persönliches Interview' [HumanInterview] already present
+    = step 'Teamentscheidung' [TeamDiscussion] already present
+    = step 'Vertragsangebot' [ContractOffer] already present
+    = step 'Abgelehnt' [Rejected] already present
+
+Jobs (3)
+
+  [OK  ] BSP-2026-001 - Senior Backend Engineer (m/w/d)
+         job id: 182687
+         job 'BSP-2026-001' already exists (182687) - reused
+         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
+         verified 7 steps
+
+  [OK  ] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
+         job id: 182688
+         job 'BSP-2026-002' already exists (182688) - reused
+         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
+         verified 7 steps
+
+  [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
+         error: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
+         valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
+
+------------------------------------------------------------------------
+ready: 2   needs attention: 1
+
+Not ready to go live:
+  - BSP-2026-003: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
+  valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
+------------------------------------------------------------------------

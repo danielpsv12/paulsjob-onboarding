@@ -1,0 +1,47 @@
+========================================================================
+Paul's Job onboarding run
+correlation id : c1062fb2-90b7-4459-8b6d-7e448766ff72
+customer       : Beispiel GmbH
+pipeline       : Tech Recruiting DE
+credits        : 998.02 remaining
+========================================================================
+
+Pipeline template
+  created template 'Tech Recruiting DE' (01a07d00-9069-73a3-883b-a11f8135d7af)
+    + step 'Neu' [New] (01a07d00-9126-79ec-bca7-7ea42d84d224)
+    + step 'Vorauswahl' [PreScreening] (01a07d00-915a-70b5-af89-df3d960eb5af)
+      + agent 'Vorauswahl-Agent' (proactive)
+    + step 'KI-Interview' [AIVoiceInterview] (01a07d00-9261-7094-a3be-d9b33cc22c39)
+      + agent 'Interview-Agent' (proactive)
+    + step 'Persönliches Interview' [HumanInterview] (01a07d00-935e-75d9-9030-529314dbc6e2)
+    + step 'Teamentscheidung' [TeamDiscussion] (01a07d00-9399-7e3f-8764-a1447968be82)
+    + step 'Vertragsangebot' [ContractOffer] (01a07d00-93f4-721e-99f1-0fee81e0a82b)
+    + step 'Abgelehnt' [Rejected] (01a07d00-947f-7e9e-ba69-5c3c0668a26c)
+
+Jobs (3)
+
+  [OK  ] BSP-2026-001 - Senior Backend Engineer (m/w/d)
+         job id: 182687
+         created job 'BSP-2026-001' -> 182687
+         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
+         verified 7 steps
+
+  [OK  ] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
+         job id: 182688
+         created job 'BSP-2026-002' -> 182688
+         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
+         verified 7 steps
+
+  [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
+         error: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
+         valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
+
+------------------------------------------------------------------------
+ready: 2   needs attention: 1
+
+Not ready to go live:
+  - BSP-2026-003: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
+  valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
+------------------------------------------------------------------------
+
+report written to out\run-20260907T175303Z.json

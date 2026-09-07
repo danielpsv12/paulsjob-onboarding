@@ -1,0 +1,40 @@
+========================================================================
+Paul's Job onboarding run
+correlation id : adea82a6-e417-40ce-b5e5-c2fdb906b11d
+customer       : Beispiel GmbH
+mode           : verify only - nothing is created or changed
+========================================================================
+
+Jobs (3)
+
+  [FAIL] BSP-2026-001 - Senior Backend Engineer (m/w/d)
+         job id: 182687
+         checked 7 steps
+         WARN agent_type: step 'Vorauswahl': expected agent type reactive, live is proactive
+         WARN agent_human_in_loop: step 'Vorauswahl': expected human-in-loop always_on, live is conditional
+         WARN agent_prompt: step 'KI-Interview': agent prompt differs from the template definition (24 chars expected, 375 live)
+         FAIL step_missing: step 'Fachgespräch' from the template is not present on the job
+         FAIL agent_missing: step 'Teamentscheidung': template defines agent 'Entscheidungs-Agent' but the job has none
+         note step_extra: step 'Persönliches Interview' [HumanInterview] exists on the job but is not in the template definition
+
+  [FAIL] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
+         job id: 182688
+         checked 7 steps
+         WARN agent_type: step 'Vorauswahl': expected agent type reactive, live is proactive
+         WARN agent_human_in_loop: step 'Vorauswahl': expected human-in-loop always_on, live is conditional
+         WARN agent_prompt: step 'KI-Interview': agent prompt differs from the template definition (24 chars expected, 375 live)
+         FAIL step_missing: step 'Fachgespräch' from the template is not present on the job
+         FAIL agent_missing: step 'Teamentscheidung': template defines agent 'Entscheidungs-Agent' but the job has none
+         note step_extra: step 'Persönliches Interview' [HumanInterview] exists on the job but is not in the template definition
+
+  [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
+         error: job does not exist
+
+------------------------------------------------------------------------
+ready: 0   needs attention: 3
+
+Not ready to go live:
+  - BSP-2026-001: step 'Fachgespräch' from the template is not present on the job; step 'Teamentscheidung': template defines agent 'Entscheidungs-Agent' but the job has none
+  - BSP-2026-002: step 'Fachgespräch' from the template is not present on the job; step 'Teamentscheidung': template defines agent 'Entscheidungs-Agent' but the job has none
+  - BSP-2026-003: job does not exist
+------------------------------------------------------------------------

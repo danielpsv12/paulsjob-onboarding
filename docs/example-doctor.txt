@@ -1,0 +1,11 @@
+base url       : https://api.paulsjob.ai/dev/v1
+correlation id : f1db91aa-bb96-446d-8a9c-b170af0c5c5f
+company        : Daniel Penner
+person slug    : 47a78330-cbfd-4c30-8567-90aff65b1731
+credits        : 997.36 remaining of 1000
+reference data : {'job_categories': 43, 'career_levels': 9, 'employment_types': 16, 'working_hours': 9, 'step_categories': 13}
+default template: Tech Recruiting DE
+templates      : 1
+  - Tech Recruiting DE (01a07d00-9069-73a3-883b-a11f8135d7af)
+jobs           : 2
+api calls made : 11
