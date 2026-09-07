@@ -304,12 +304,18 @@ Everything below was found by running against the deployment and is reproducible
    `EndOfCallProcedure`** inside `AdditionalFields`. Discoverable only by getting
    a 422 back, since the requirement lives in a `oneOf` variant selected by a
    discriminator. The tool now validates this locally.
-6. **`IsActive: false` is rejected as `400 ['IsActive is required']`** on
-   `PUT .../steps/{stepId}/agents/{agentId}`, while `IsActive: true` passes
-   validation. A `false` boolean is being treated as an absent one — the usual
-   Go `binding:"required"` behaviour on a bool. As it stands, that field cannot
-   be set to false through this endpoint. This one looks like a bug worth
-   reporting rather than working around.
+6. **An agent on a job cannot be deactivated.** On
+   `PUT /recruiting/jobs/{id}/steps/{stepId}/agents/{agentId}`, `IsActive: false`
+   is rejected with `400 ['IsActive is required']` — and **omitting** the field
+   produces the *identical* error, so the validator cannot tell "false" from
+   "absent". `IsActive: true` gets past validation (it is then stopped at 422 by
+   the permission check on a template-managed job), which places the asymmetry in
+   request binding rather than in policy. The cause is visible in the spec:
+   `AgentPayload.IsActive` carries `binding: "required"`, and Go's validator
+   fails the zero value of a non-pointer bool. The template endpoint declares the
+   same constraint but accepts `false` and persists it — so the two paths enforce
+   the same rule differently. Consequence: a read-modify-write round trip on an
+   inactive agent cannot succeed. Written up in `../API-Befund-IsActive.md`.
 7. **Template-managed jobs are locked**, which is good: job-level agent edits
    answer `422 job agent update not allowed`. It also means drift cannot be
    induced through the API while a job is template-managed — so the drift demo
