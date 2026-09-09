@@ -68,6 +68,130 @@ jobs:
         Die Beispiel GmbH ist ein mittelständisches Unternehmen mit rund
         200 Mitarbeitenden und Sitz in Berlin.
 
+  # From here on the customer's non-IT openings. Each matches a different
+  # pipeline, and none of them names one: the category and career level in the
+  # rows below are what the platform matches against.
+  - external_id: "BSP-2026-004"
+    title: "Account Executive Neukundengeschäft (m/w/d)"
+    internal_name: "VT01 - AE Neukunden"
+    location: "München"
+    region: "DACH"
+    category: "Vertrieb"
+    career_level: "Mittleres Niveau"
+    working_hours: "FullTime"
+    published: false
+    description: |
+      Für unser Vertriebsteam suchen wir eine Person, die Neukundengeschäft
+      eigenverantwortlich aufbaut.
+
+      Aufgaben:
+      - Aufbau und Pflege einer eigenen Pipeline im Mittelstand
+      - Führen von Erstgesprächen bis zum Abschluss
+      - Übergabe an das Customer-Success-Team
+
+      Anforderungen:
+      - mindestens drei Jahre Erfahrung im B2B-Vertrieb
+      - Erfahrung mit eigenen Umsatzzielen
+      - Reisebereitschaft etwa zwei Tage pro Woche
+
+  - external_id: "BSP-2026-005"
+    title: "Content Marketing Manager (m/w/d)"
+    internal_name: "MK01 - Content"
+    location: "Berlin"
+    category: "Marketing und Kommunikation"
+    career_level: "Mittleres Niveau"
+    working_hours: "FullTimeOrPartTime"
+    published: false
+    description:
+      requirements: |
+        Du verantwortest unsere Inhalte über Blog, Newsletter und LinkedIn.
+
+        Aufgaben:
+        - Redaktionsplanung und eigene Texte
+        - Aufbau wiederkehrender Formate
+        - Auswertung, was tatsächlich gelesen wird
+
+        Anforderungen:
+        - mindestens drei Jahre Erfahrung im Content Marketing
+        - zwei Arbeitsproben aus den letzten zwölf Monaten
+        - sehr gutes Deutsch in Wort und Schrift
+      ideal_candidate: |
+        Du schreibst selbst, statt nur zu briefen, und kannst begründen, warum
+        ein Text funktioniert hat und ein anderer nicht.
+      about_company: |
+        Die Beispiel GmbH ist ein mittelständisches Unternehmen mit rund
+        200 Mitarbeitenden und Sitz in Berlin.
+
+  - external_id: "BSP-2026-006"
+    title: "Pflegefachkraft Wohnbereich 2 (m/w/d)"
+    internal_name: "PF01 - WB2"
+    location: "Dortmund"
+    category: "Pflege / Betreuung (Stationär)"
+    career_level: "Mittleres Niveau"
+    working_hours: "FullTimeOrPartTime"
+    published: false
+    description: |
+      Für unseren Wohnbereich 2 mit 24 Bewohnerinnen und Bewohnern suchen wir
+      eine Pflegefachkraft.
+
+      Aufgaben:
+      - Grund- und Behandlungspflege
+      - Pflegedokumentation
+      - Begleitung der Angehörigen
+
+      Anforderungen:
+      - abgeschlossene Ausbildung als Pflegefachkraft, Anerkennung ausländischer
+        Abschlüsse ist möglich und wird begleitet
+      - Bereitschaft zu Früh- und Spätdienst
+      - Deutsch mindestens B1
+
+  - external_id: "BSP-2026-007"
+    title: "Sachbearbeitung Empfang und Verwaltung (m/w/d)"
+    internal_name: "VW01 - Empfang"
+    location: "Essen"
+    category: "Verwaltung und Sekretariat"
+    career_level: "Einstiegsniveau"
+    working_hours: "PartTime"
+    published: false
+    description: |
+      Für unseren Standort Essen suchen wir Unterstützung am Empfang und in
+      der allgemeinen Verwaltung.
+
+      Aufgaben:
+      - Empfang von Gästen und Telefonzentrale
+      - Post, Bestellwesen und Terminkoordination
+      - Vorbereitende Ablage für die Buchhaltung
+
+      Anforderungen:
+      - abgeschlossene kaufmännische Ausbildung oder vergleichbare Erfahrung
+      - sicherer Umgang mit Office-Anwendungen
+      - 25 bis 30 Stunden pro Woche
+
+  # Matches no pipeline rule on purpose. It lands in the fallback template
+  # 'Standard DE' and the run reports it as WARN template_fallback - which is
+  # the honest answer: this customer has no process for kitchen roles yet.
+  - external_id: "BSP-2026-008"
+    title: "Küchenhilfe (m/w/d)"
+    internal_name: "KS01 - Küche"
+    location: "Dortmund"
+    category: "Küche / Service"
+    career_level: "Einstiegsniveau"
+    working_hours: "PartTime"
+    published: false
+    description: |
+      Für unsere Küche am Standort Dortmund suchen wir Unterstützung bei der
+      Zubereitung und der Ausgabe der Mahlzeiten.
+
+      Aufgaben:
+      - Vorbereiten von Speisen nach Anweisung der Küchenleitung
+      - Ausgabe der Mahlzeiten
+      - Reinigung von Geschirr und Arbeitsflächen
+
+      Anforderungen:
+      - Erfahrung in einer Großküche ist willkommen, aber keine Bedingung
+      - Bereitschaft zur Arbeit am Wochenende im Wechsel
+      - Deutsch für die Verständigung im Team
+
   # Deliberately broken: the working hours value does not exist. The run reports
   # this job as failed, lists the valid options, and still onboards the others.
   - external_id: "BSP-2026-003"

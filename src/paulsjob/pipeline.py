@@ -8,6 +8,7 @@ answer at go-live.
 """
 
 import logging
+import time
 
 from .errors import NotFoundError, ValidationError
 
@@ -55,6 +56,46 @@ def init_pipeline(client, job_id, template_id=None, auto_init=False, lang=None):
             ) from exc
         raise
     return True
+
+
+# A job is matched to a template by a search query over the job index, and that
+# index trails job creation by a few seconds. Measured on the dev deployment: a
+# job created and initialised immediately falls back to the company default,
+# while the same job initialised 5s later matches its rule. The API reports 200
+# either way, so the wait is not optional - it is the difference between the
+# right pipeline and a silently wrong one.
+SEARCHABLE_TIMEOUT_SECONDS = 45
+SEARCHABLE_POLL_SECONDS = 1.0
+
+
+def wait_until_searchable(client, external_id, timeout=SEARCHABLE_TIMEOUT_SECONDS):
+    """Block until the job is findable in the job search, or the timeout passes.
+
+    Returns the seconds waited, or None if it never appeared. Polling the search
+    is better than a fixed sleep: it is the same index AutoInit matches against,
+    so it answers the actual question rather than guessing at a duration.
+    """
+    from .jobs import find_by_external_id
+
+    started = time.monotonic()
+    while True:
+        if find_by_external_id(client, external_id):
+            return time.monotonic() - started
+        if time.monotonic() - started >= timeout:
+            return None
+        time.sleep(SEARCHABLE_POLL_SECONDS)
+
+
+def assigned_template(client, job_id):
+    """The pipeline template the job actually ended up with, or None.
+
+    404 here means the job was never initialised from a template at all.
+    """
+    try:
+        status = client.get(f"{steps_path(job_id)}/pipeline-template") or {}
+    except NotFoundError:
+        return None
+    return status.get("PipelineTemplate") or None
 
 
 def fetch_pipeline_state(client, job_id):
@@ -163,6 +204,22 @@ def verify(state, definition):
             )
         elif expected_agent:
             _verify_agent(findings, name, expected_agent, live_agents)
+        elif live_agents:
+            # The mirror of agent_missing, and the more uncomfortable one: an
+            # agent nobody agreed to is talking to candidates and spending
+            # credits. Graded critical for the same reason a missing agent is -
+            # the definition is the agreement, and this job does not match it.
+            names = ", ".join(f"'{a.get('Name') or '?'}'" for a in live_agents)
+            findings.append(
+                {
+                    "severity": CRITICAL,
+                    "check": "agent_extra",
+                    "detail": (
+                        f"step '{name}': the definition configures no agent, but {names} "
+                        f"{'is' if len(live_agents) == 1 else 'are'} live on this step"
+                    ),
+                }
+            )
 
     extra = set(live_by_name) - {(s.get("name") or "").strip().casefold() for s in expected_steps}
     for name in sorted(extra):
@@ -214,6 +271,22 @@ def _verify_agent(findings, step_name, expected_agent, live_agents):
                 "severity": CRITICAL,
                 "check": "agent_inactive",
                 "detail": f"step '{step_name}': agent '{match.get('Name')}' exists but IsActive is false",
+            }
+        )
+
+    # Everything below checks the agent that was agreed. Anything else sharing
+    # the step is reported separately - it is not a deviation *of* that agent.
+    extras = [a for a in live_agents if a is not match]
+    if extras:
+        names = ", ".join(f"'{a.get('Name') or '?'}'" for a in extras)
+        findings.append(
+            {
+                "severity": WARNING,
+                "check": "agent_extra",
+                "detail": (
+                    f"step '{step_name}': agent '{match.get('Name')}' is configured as agreed, "
+                    f"but {names} also {'runs' if len(extras) == 1 else 'run'} on this step"
+                ),
             }
         )
 

@@ -1,8 +1,17 @@
 name: Tech Recruiting DE
 description: DRIFT DEMO - deliberately differs from what is live, to show what the
   verification reports. Not meant to be created; use it with 'verify'.
-is_default: true
+# Mirrors tech_de.yaml, which is no longer the default. Only used with 'verify'.
+is_default: false
 pipeline_without_ai: false
+# Same match rules as the real definition: this file differs from what is live
+# only in its steps and agents, so the drift report stays about drift.
+match:
+  category: IT
+  career_level:
+  - Oberstufe
+  - Mittleres Niveau
+  - "Führen"
 steps:
 - name: Neu
   category: New

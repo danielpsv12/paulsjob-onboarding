@@ -11,9 +11,24 @@
 name: "Tech Recruiting DE"
 description: "Standard-Pipeline für technische Rollen: Vorauswahl, KI-Interview, persönliches Gespräch."
 
-# Makes this the company default, so jobs created later can use AutoInit
-# instead of naming a template id.
-is_default: true
+# Not the default any more. It was, and that was wrong: its agent asks about
+# "Projekterfahrung mit den genannten Technologien", so every unmatched job -
+# Küche, Reinigung, Sicherheitsdienst - was screened as a tech role. The
+# fallback now lives in standard_de.yaml, where it means "no rule matched".
+is_default: false
+
+# Which jobs the platform should route here. The rules are stored on the
+# template as FilterRulesElastic and applied by the API itself when a job is
+# initialised with AutoInit - this tool does not choose the template.
+#
+# Values are the words the customer uses; they are resolved against the live
+# reference lists before being sent ('Oberstufe' -> SeniorLevel), because the
+# API answers 400 'invalid filter rules' without saying which value was wrong.
+# A list means "any of these", a single value means "exactly this", and the
+# fields are ANDed.
+match:
+  category: "IT"
+  career_level: ["Oberstufe", "Mittleres Niveau", "Führen"]
 
 # Set to true for a pipeline that never involves AI and therefore consumes no
 # credits. It then permits only New, TeamDiscussion, CodeExecution and Rejected.

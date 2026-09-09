@@ -1,22 +1,31 @@
-"""Pipeline templates: make sure the pipeline a job needs actually exists.
+"""Pipeline templates: make sure the pipelines a job could need actually exist.
 
-The task says "match it with an appropriate pipeline template". In a fresh
-account there is nothing to match against - no company templates, no platform
-library entries, and no company default (that endpoint answers 404). So before
-a job can be initialised, a template has to exist.
+The task says "match it with an appropriate pipeline template". The platform can
+do that matching itself - a template carries `FilterRulesElastic` and the job is
+initialised with `AutoInit` - but in a fresh account there is nothing to match
+against: no company templates, an empty platform library, and no company default
+(that endpoint answers 404). So the templates have to exist, and carry their
+rules, before any job can be matched to one.
 
-This module reads a template definition from YAML and creates it only if a
+This module reads template definitions from YAML and creates each only if a
 template of that name is absent, which keeps repeated runs from piling up
-duplicates.
+duplicates. An existing template whose match rules have drifted from the
+definition is corrected, because the rules are what the API matches on: a stale
+rule silently sends the next job to the wrong pipeline.
 """
 
 import logging
 
+from . import matching
 from .errors import ConfigError, NotFoundError, ValidationError
 
 log = logging.getLogger("paulsjob")
 
 TEMPLATES_PATH = "/recruiting/job-step-templates/pipelines"
+# A template belongs to a version group, which is a separate object with its own
+# lifetime: deleting the template does not delete the group, and the dashboard
+# lists groups, so an undeleted one shows up as a duplicate of the same name.
+VERSION_GROUPS_PATH = "/recruiting/job-step-templates/pipeline-version-groups"
 DEFAULT_TEMPLATE_PATH = "/recruiting/job-step-templates/pipelines/default"
 
 VALID_AGENT_TYPES = {"proactive", "reactive", "reactive_and_proactive"}
@@ -53,6 +62,77 @@ def get_company_default(client):
         return None
 
 
+def _template_body(definition, filter_rules):
+    """The create/update payload for a template, without its steps."""
+    body = {"Name": definition["name"], "IsDefault": bool(definition.get("is_default", False))}
+    if definition.get("description"):
+        body["Description"] = definition["description"]
+    if definition.get("pipeline_without_ai"):
+        # Costs no credits, but only permits New/TeamDiscussion/CodeExecution/Rejected.
+        body["PipelineWithoutAI"] = True
+    if filter_rules is not None:
+        body["FilterRulesElastic"] = filter_rules
+    return body
+
+
+def _rules_differ(stored, wanted):
+    """Compare what the template carries with what the definition asks for."""
+    return _normalise_rules(stored) != _normalise_rules(wanted)
+
+
+def _template_updates(stored, definition, filter_rules):
+    """What the live template disagrees with the definition about.
+
+    Match rules are the important one - they decide which jobs arrive - but
+    `is_default` matters just as much and in the opposite direction: it decides
+    which jobs arrive when *nothing* matched. A definition that gives up the
+    default has to be able to hand it over, or the old default keeps quietly
+    collecting every unmatched job.
+
+    PipelineWithoutAI is deliberately not reconciled: switching it on is
+    refused with 422 while the template still holds steps of other categories,
+    so pushing it blindly would break the run rather than fix the template.
+    """
+    updates = []
+    if _rules_differ(stored.get("FilterRulesElastic"), filter_rules):
+        updates.append(f"match rules -> {_describe_rules(filter_rules)}")
+    wanted_default = bool(definition.get("is_default", False))
+    if bool(stored.get("IsDefault")) != wanted_default:
+        updates.append(f"is_default -> {wanted_default}")
+    if (stored.get("Description") or "").strip() != (definition.get("description") or "").strip():
+        updates.append("description")
+    return updates
+
+
+def _normalise_rules(rules):
+    """Key/operator/value triples, order-independent and string-compared.
+
+    The API echoes rules back in its own order and can widen a scalar to a list,
+    so a naive == would report a difference on every run and rewrite the
+    template each time.
+    """
+    if not rules:
+        return []
+    out = []
+    for rule in rules.get("Must") or []:
+        value = rule.get("Value")
+        value = sorted(str(v) for v in value) if isinstance(value, list) else [str(value)]
+        out.append((str(rule.get("Key")), str(rule.get("Operator")), tuple(value)))
+    return sorted(out)
+
+
+def _describe_rules(rules):
+    """One readable line, for the run report."""
+    if not rules:
+        return "none - reachable only as the company default or by explicit id"
+    parts = []
+    for rule in rules.get("Must") or []:
+        value = rule.get("Value")
+        value = ", ".join(str(v) for v in value) if isinstance(value, list) else str(value)
+        parts.append(f"{rule.get('Key')} {rule.get('Operator')} {value}")
+    return " AND ".join(parts)
+
+
 def validate_definition(definition, reference):
     """Check the YAML before sending anything, so mistakes fail locally.
 
@@ -61,6 +141,14 @@ def validate_definition(definition, reference):
     """
     if not definition.get("name"):
         raise ConfigError("pipeline definition needs a 'name'")
+
+    # Raises with the list of valid options when a match value is a word the
+    # account does not know. The API's own answer is 400 'invalid filter rules',
+    # which does not say which value it disliked.
+    matching.build_filter_rules(
+        definition.get("match"), reference, where=f"pipeline '{definition['name']}'"
+    )
+
     steps = definition.get("steps") or []
     if not steps:
         raise ConfigError(f"pipeline '{definition['name']}' has no steps")
@@ -168,25 +256,38 @@ def ensure_template(client, reference, definition, person_slug):
     name = definition["name"]
     actions = []
 
+    filter_rules = matching.build_filter_rules(
+        definition.get("match"), reference, where=f"pipeline '{name}'"
+    )
+
     existing = find_template_by_name(client, name)
     if existing:
         template_id = existing.get("ID")
         actions.append(f"template '{name}' already exists ({template_id}) - reconciling")
+        # A definition that has moved on from what is stored has to win.
+        # Compared before writing: an update is in place (same id, Version
+        # stays 1, steps survive) but it does not move UpdatedAt either, so a
+        # needless rewrite would leave nothing behind to notice it by.
+        #
+        # The comparison needs the detail endpoint: the template *list* omits
+        # FilterRulesElastic altogether, so reusing the record found by name
+        # would read every template as having no rules at all.
+        if not client.dry_run:
+            stored = client.get(f"{TEMPLATES_PATH}/{template_id}") or {}
+            updates = _template_updates(stored, definition, filter_rules)
+            if updates:
+                client.put(f"{TEMPLATES_PATH}/{template_id}", json_body=_template_body(definition, filter_rules))
+                for update in updates:
+                    actions.append(f"  ~ {update}")
     else:
-        body = {"Name": name, "IsDefault": bool(definition.get("is_default", False))}
-        if definition.get("description"):
-            body["Description"] = definition["description"]
-        if definition.get("pipeline_without_ai"):
-            # Costs no credits, but only permits New/TeamDiscussion/CodeExecution/Rejected.
-            body["PipelineWithoutAI"] = True
-
-        created = client.post(TEMPLATES_PATH, json_body=body) or {}
+        created = client.post(TEMPLATES_PATH, json_body=_template_body(definition, filter_rules)) or {}
         template_id = created.get("ID") or created.get("id")
         if not template_id:
             if not client.dry_run:
                 raise ConfigError(f"template creation returned no ID: {created}")
             template_id = DRY_RUN_TEMPLATE_ID
         actions.append(f"created template '{name}' ({template_id})")
+        actions.append(f"  match rules: {_describe_rules(filter_rules)}")
 
     live_steps = _live_steps(client, template_id)
 

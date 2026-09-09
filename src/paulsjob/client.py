@@ -3,7 +3,7 @@
 Everything that is awkward about talking to this API is handled here once, so
 the onboarding logic above it stays readable:
 
-* auth, and a User-Agent (Cloudflare rejects the default Python one with 1010)
+* auth, and a User-Agent (Cloudflare rejects the default urllib one with 1010)
 * the tracing headers the API asks clients to send, used for idempotency
 * retries with exponential backoff and jitter
 * the two different pagination styles the API uses
@@ -212,6 +212,9 @@ class PaulsJobClient:
 
     def delete(self, path):
         return self.request("DELETE", path)
+
+    def put(self, path, json_body=None, params=None):
+        return self.request("PUT", path, params=params, json_body=json_body)
 
     def post(self, path, json_body=None, params=None, idempotency_key=None, read_only=False):
         return self.request(

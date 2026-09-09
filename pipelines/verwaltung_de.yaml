@@ -1,0 +1,63 @@
+# Pipeline template definition for administrative and back-office roles.
+#
+# Der klassische Buerofall: viele Bewerbungen, wenige Stellen. Das Gewicht liegt
+# deshalb auf der Vorauswahl, und es gibt genau einen persoenlichen Termin -
+# ein zweiter kostet hier mehr Zeit, als er an Sicherheit bringt.
+#
+# Die Regel fasst die drei Verwaltungskategorien zusammen, die dieselben
+# Rollen in unterschiedlichen Organisationsformen meinen.
+
+name: "Verwaltung DE"
+description: "Pipeline für Verwaltung und Sekretariat: Vorauswahl, ein Gespräch, Teamentscheidung, Angebot."
+
+is_default: false
+pipeline_without_ai: false
+
+match:
+  category:
+    - "Verwaltung und Sekretariat"
+    - "Zentrale Verwaltung / Hauptverwaltung"
+    - "Verwaltung in der Einrichtung"
+
+steps:
+  - name: "Neu"
+    category: New
+    color: "#C9D5E3"
+
+  - name: "Vorauswahl"
+    category: PreScreening
+    color: "#9BD9B0"
+    agent:
+      name: "Verwaltungs-Vorauswahl"
+      type: proactive
+      description: "Prüft Erfahrung mit den genannten Systemen, Arbeitszeitmodell und Starttermin."
+      human_in_loop: conditional
+      condition: "Bewerber fragt nach Gehalt, Homeoffice-Regelung oder Arbeitszeiten"
+      active: true
+      instructions: |
+        Du führst die Vorauswahl für eine Stelle in der Verwaltung durch.
+
+        Kläre in dieser Reihenfolge:
+        1. Erfahrung mit den in der Ausschreibung genannten Systemen und Programmen?
+        2. Gewünschter Stundenumfang und mögliches Arbeitszeitmodell?
+        3. Ab wann kann die Person anfangen?
+
+        Frage nach konkreten Aufgaben statt nach Programmkenntnissen im Allgemeinen:
+        "Wofür haben Sie das zuletzt benutzt?" sagt mehr als eine Selbsteinschätzung.
+        Stelle höchstens drei Rückfragen und formuliere sie einzeln.
+
+  - name: "Persönliches Interview"
+    category: HumanInterview
+    color: "#FFB703"
+
+  - name: "Teamentscheidung"
+    category: TeamDiscussion
+    color: "#FFD59E"
+
+  - name: "Vertragsangebot"
+    category: ContractOffer
+    color: "#B7E4C7"
+
+  - name: "Abgelehnt"
+    category: Rejected
+    color: "#E5989B"

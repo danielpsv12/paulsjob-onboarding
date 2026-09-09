@@ -1,0 +1,91 @@
+# Pipeline template definition for sales roles.
+#
+# Vertrieb wird anders besetzt als Technik: die Stimme ist Teil der Qualifikation,
+# und ein Rollenspiel sagt mehr als ein weiteres Gespraech ueber Erfahrung. Das
+# KI-Interview steht deshalb vor dem persoenlichen Termin - wer am Telefon nicht
+# ueberzeugt, ueberzeugt auch im Termin nicht.
+
+name: "Vertrieb DE"
+description: "Pipeline für Vertriebsrollen: Vorauswahl, KI-Interview, Rollenspiel, Entscheidung."
+
+is_default: false
+pipeline_without_ai: false
+
+# Alle Vertriebsstellen, unabhängig vom Level.
+match:
+  category: "Vertrieb"
+
+steps:
+  - name: "Neu"
+    category: New
+    color: "#C9D5E3"
+
+  - name: "Vorauswahl"
+    category: PreScreening
+    color: "#9BD9B0"
+    agent:
+      name: "Vertriebs-Vorauswahl"
+      type: proactive
+      description: "Prüft Verantwortung für eigene Zahlen, Vertriebsweg und Reisebereitschaft."
+      human_in_loop: conditional
+      condition: "Bewerber fragt nach Provisionsmodell, Zielvorgaben oder Gebietszuschnitt"
+      active: true
+      instructions: |
+        Du führst die Vorauswahl für eine Vertriebsposition durch.
+
+        Kläre in dieser Reihenfolge:
+        1. Hat die Person eigene Umsatzziele verantwortet, und in welcher Größenordnung?
+        2. Neukundengeschäft, Bestandskundenbetreuung oder beides?
+        3. Wie viel Reisetätigkeit ist möglich?
+
+        Frage nach Zahlen und Zeiträumen, nicht nach Selbsteinschätzungen.
+        Nenne kein Provisionsmodell und keine Zielvorgaben - das gehört ins Gespräch
+        mit der Vertriebsleitung.
+        Stelle höchstens drei Rückfragen und formuliere sie einzeln.
+
+  - name: "KI-Interview"
+    category: AIVoiceInterview
+    color: "#8ECAE6"
+    agent:
+      name: "Vertriebs-Interview"
+      type: proactive
+      description: "Strukturiertes Telefoninterview; im Vertrieb ist das Gespräch selbst Teil der Prüfung."
+      human_in_loop: always_off
+      active: true
+      additional_fields:
+        InterviewLanguage: "auto"
+        GreetingInstructions: |
+          Begrüße die Person mit Namen, nenne die Position und sag, dass das
+          Gespräch etwa zehn Minuten dauert und aufgezeichnet wird.
+          Frage, ob es gerade passt, und biete sonst einen anderen Termin an.
+        EndOfCallProcedure: |
+          Fasse in zwei Sätzen zusammen, was besprochen wurde.
+          Nenne als nächsten Schritt die Rückmeldung innerhalb von drei Werktagen.
+          Bedanke dich und beende das Gespräch, ohne eine Einschätzung abzugeben.
+      instructions: |
+        Du führst ein strukturiertes Erstinterview von etwa zehn Minuten.
+
+        Decke diese Themen ab:
+        - ein konkreter Abschluss der letzten zwölf Monate: Ausgangslage, Vorgehen, Ergebnis
+        - Umgang mit einem verlorenen Deal und was daraus folgte
+        - Motivation für einen Wechsel
+
+        Frage nach Beispielen statt nach Selbsteinschätzungen.
+        Wenn eine Antwort ausweichend bleibt, hake genau einmal nach.
+        Bewerte nicht im Gespräch, sondern protokolliere die Antworten sachlich.
+
+  - name: "Rollenspiel"
+    category: HumanInterview
+    color: "#FFB703"
+
+  - name: "Teamentscheidung"
+    category: TeamDiscussion
+    color: "#FFD59E"
+
+  - name: "Vertragsangebot"
+    category: ContractOffer
+    color: "#B7E4C7"
+
+  - name: "Abgelehnt"
+    category: Rejected
+    color: "#E5989B"

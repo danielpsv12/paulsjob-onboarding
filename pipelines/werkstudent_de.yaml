@@ -1,0 +1,65 @@
+# Pipeline template definition for working-student and entry-level roles.
+#
+# Deliberately shorter than the senior pipeline: no AI voice interview, and one
+# personal conversation instead of two rounds. A working student is hired in
+# days, not weeks, and every AI step costs credits.
+#
+# Which jobs land here is decided by `match:` below - the rules are stored on
+# the template as FilterRulesElastic, and the platform applies them itself when
+# the job is initialised with AutoInit.
+
+name: "Werkstudenten DE"
+description: "Kurze Pipeline für Werkstudierende und Einstiegspositionen: Vorauswahl, ein persönliches Gespräch, Angebot."
+
+# The senior pipeline is the company default, so this one is only ever reached
+# by matching its rules.
+is_default: false
+pipeline_without_ai: false
+
+# The customer's rule in their own words: "IT-Stellen auf Einstiegsniveau".
+# Values are resolved against the live reference lists, so 'Einstiegsniveau'
+# becomes EntryLevel before it is sent - the API rejects unknown values with
+# 400 'invalid filter rules' and does not say which one it disliked.
+match:
+  category: "IT"
+  career_level: "Einstiegsniveau"
+
+steps:
+  # 'New' is the fixed entry step - the API does not allow deleting or renaming it.
+  - name: "Neu"
+    category: New
+    color: "#C9D5E3"
+
+  - name: "Vorauswahl"
+    category: PreScreening
+    color: "#9BD9B0"
+    agent:
+      name: "Werkstudenten-Vorauswahl"
+      type: proactive
+      description: "Klärt Studienstatus, verfügbare Stunden und den frühesten Starttermin."
+      human_in_loop: always_off
+      active: true
+      instructions: |
+        Du führst die Vorauswahl für eine Werkstudierendenstelle durch.
+
+        Kläre in dieser Reihenfolge:
+        1. Läuft aktuell ein Studium, und bis wann voraussichtlich?
+        2. Wie viele Stunden pro Woche sind während des Semesters möglich?
+        3. Ab wann kann die Person anfangen?
+
+        Stelle höchstens drei Rückfragen und formuliere sie einzeln, nicht als Liste.
+        Berufserfahrung ist kein Kriterium - frage nicht danach.
+        Triff keine Absage-Entscheidung allein aufgrund fehlender Praxiserfahrung.
+
+  - name: "Persönliches Gespräch"
+    category: HumanInterview
+    color: "#FFB703"
+
+  - name: "Vertragsangebot"
+    category: ContractOffer
+    color: "#B7E4C7"
+
+  # 'Rejected' is the fixed rejection step and likewise cannot be removed.
+  - name: "Abgelehnt"
+    category: Rejected
+    color: "#E5989B"

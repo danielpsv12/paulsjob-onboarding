@@ -1,0 +1,47 @@
+# The fallback pipeline - deliberately not a hiring process.
+#
+# Every job that matches no rule ends up here, because the platform assigns the
+# company default when AutoInit finds nothing. That fallback should mean one
+# thing and say it plainly: *nobody has decided yet how this role is hired*.
+#
+# So this template has no `match:` block at all - nothing routes to it by rule,
+# it is only ever reached by falling through - and it has no interview, no
+# offer and no agent. A job sitting in it is a job waiting for a human to give
+# it a real pipeline.
+#
+# `pipeline_without_ai` guarantees that: a misrouted job cannot spend a single
+# credit while it waits. The API only permits New, TeamDiscussion,
+# CodeExecution and Rejected in such a template, which is exactly the shape a
+# holding pen needs anyway.
+#
+# The alternative - making the tech pipeline the default, as it was - meant an
+# unmatched Küchenhilfe was asked about her project experience with the
+# technologies named in the job ad, by an AI voice interview that costs money.
+
+name: "Standard DE"
+description: "Auffangpipeline für Stellen, für die noch keine passende Pipeline hinterlegt ist. Kein Prozess - hier entscheidet ein Mensch, wie die Rolle besetzt wird."
+
+# The company default: what a job gets when no rule matches.
+is_default: true
+
+# No AI anywhere in this pipeline, so a job that lands here by accident is free.
+pipeline_without_ai: true
+
+# Deliberately no `match:` block. A rule here would defeat the purpose - the
+# whole value of this template is that "job is in Standard DE" means "matched
+# nothing", both in the run report and to anyone looking in the Paul's Job UI.
+
+steps:
+  - name: "Neu"
+    category: New
+    color: "#C9D5E3"
+
+  # Where the decision happens: which pipeline does this role actually belong
+  # in, and does one have to be built for it?
+  - name: "Zuordnung offen"
+    category: TeamDiscussion
+    color: "#FFD59E"
+
+  - name: "Abgelehnt"
+    category: Rejected
+    color: "#E5989B"

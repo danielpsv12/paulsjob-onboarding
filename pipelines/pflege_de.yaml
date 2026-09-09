@@ -1,0 +1,64 @@
+# Pipeline template definition for nursing and care roles.
+#
+# Bewusst die kuerzeste Pipeline im Bestand. In der Pflege entscheidet
+# Geschwindigkeit: wer drei Runden braucht, verliert die Bewerberin an das Haus
+# zwei Strassen weiter. Deshalb keine Teamentscheidung als eigener Schritt und
+# kein KI-Interview vor dem persoenlichen Kontakt - stattdessen frueh ein
+# Hospitationstag, weil in der Pflege beide Seiten den Alltag sehen wollen.
+#
+# Die Regel deckt die Pflegeberufe zusammen ab: stationaer, ambulant, Therapie
+# und Fachkraefte mit Zusatzqualifikation laufen durch denselben Prozess.
+
+name: "Pflege DE"
+description: "Kurze Pipeline für Pflegeberufe: Vorauswahl, Hospitationstag, Angebot."
+
+is_default: false
+pipeline_without_ai: false
+
+match:
+  category:
+    - "Pflege / Betreuung (Stationär)"
+    - "Pflege ambulant"
+    - "Pflege, Therapie"
+    - "Pflegefachkraft (inkl. Zusatzqualifikationen)"
+
+steps:
+  - name: "Neu"
+    category: New
+    color: "#C9D5E3"
+
+  - name: "Vorauswahl"
+    category: PreScreening
+    color: "#9BD9B0"
+    agent:
+      name: "Pflege-Vorauswahl"
+      type: proactive
+      description: "Klärt Qualifikation und Anerkennung, Schichtbereitschaft und den frühesten Starttermin."
+      human_in_loop: always_off
+      active: true
+      instructions: |
+        Du führst die Vorauswahl für eine Stelle in der Pflege durch.
+
+        Kläre in dieser Reihenfolge:
+        1. Welche Ausbildung liegt vor, und ist sie in Deutschland anerkannt?
+           Bei einem Abschluss aus dem Ausland: läuft die Anerkennung bereits?
+        2. Welche Schichten sind möglich, und in welchem Stundenumfang?
+        3. Ab wann kann die Person anfangen?
+
+        Antworte freundlich und in einfacher Sprache, auch wenn die Person
+        Deutsch als zweite Sprache spricht.
+        Stelle höchstens drei Rückfragen und formuliere sie einzeln.
+        Lehne niemanden wegen einer laufenden Anerkennung ab - das entscheidet
+        die Pflegedienstleitung.
+
+  - name: "Hospitationstag"
+    category: RecruitingDay
+    color: "#FFB703"
+
+  - name: "Vertragsangebot"
+    category: ContractOffer
+    color: "#B7E4C7"
+
+  - name: "Abgelehnt"
+    category: Rejected
+    color: "#E5989B"
