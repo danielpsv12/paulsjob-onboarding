@@ -54,6 +54,13 @@ Check the connection and see what your account contains:
 py onboard.py doctor
 ```
 
+**What a run does to the account:** it creates the seven templates from
+`pipelines/` and the eight jobs from the jobs file, and `standard_de.yaml`
+claims the company default — so on an account that already has a default
+template, that flag moves to `Standard DE` (the API transfers the flag rather
+than duplicating it, see finding 12). `py scripts/reset_demo.py --confirm`
+removes exactly what the run created and nothing else.
+
 ---
 
 ## Usage
