@@ -1,13 +1,35 @@
+$ py onboard.py onboard --no-json
+
 ========================================================================
 Paul's Job onboarding run
-correlation id : 0e1c4749-fcc4-45f2-ba5d-53d60aa33e59
+correlation id : 462bfd23-cef7-4f8e-bb87-186c90029ec7
 customer       : Beispiel GmbH
-pipeline       : Tech Recruiting DE
-credits        : 997.36 remaining
+pipelines      : Marketing & Kommunikation DE, Pflege DE, Standard DE, Tech Recruiting DE, Vertrieb DE, Verwaltung DE, Werkstudenten DE
+credits        : 988.87 remaining
 ========================================================================
 
 Pipeline template
-  template 'Tech Recruiting DE' already exists (01a07d00-9069-73a3-883b-a11f8135d7af) - reconciling
+  template 'Marketing & Kommunikation DE' already exists (01a080fe-81ea-7327-9d8e-afbba1f97ff1) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Vorauswahl' [PreScreening] already present
+      = agent 'Marketing-Vorauswahl' already present
+    = step 'Arbeitsproben' [DataCollection] already present
+    = step 'Persönliches Interview' [HumanInterview] already present
+    = step 'Teamentscheidung' [TeamDiscussion] already present
+    = step 'Vertragsangebot' [ContractOffer] already present
+    = step 'Abgelehnt' [Rejected] already present
+  template 'Pflege DE' already exists (01a080fe-8538-78a4-b2f3-96e116a40d5d) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Vorauswahl' [PreScreening] already present
+      = agent 'Pflege-Vorauswahl' already present
+    = step 'Hospitationstag' [RecruitingDay] already present
+    = step 'Vertragsangebot' [ContractOffer] already present
+    = step 'Abgelehnt' [Rejected] already present
+  template 'Standard DE' already exists (01a080fe-87fb-7a5a-ad6a-fbc33499fb81) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Zuordnung offen' [TeamDiscussion] already present
+    = step 'Abgelehnt' [Rejected] already present
+  template 'Tech Recruiting DE' already exists (01a080fe-89c6-7e61-ac5c-7f5e61b855b7) - reconciling
     = step 'Neu' [New] already present
     = step 'Vorauswahl' [PreScreening] already present
       = agent 'Vorauswahl-Agent' already present
@@ -17,27 +39,83 @@ Pipeline template
     = step 'Teamentscheidung' [TeamDiscussion] already present
     = step 'Vertragsangebot' [ContractOffer] already present
     = step 'Abgelehnt' [Rejected] already present
+  template 'Vertrieb DE' already exists (01a080fe-8d9c-7314-a16e-430544934685) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Vorauswahl' [PreScreening] already present
+      = agent 'Vertriebs-Vorauswahl' already present
+    = step 'KI-Interview' [AIVoiceInterview] already present
+      = agent 'Vertriebs-Interview' already present
+    = step 'Rollenspiel' [HumanInterview] already present
+    = step 'Teamentscheidung' [TeamDiscussion] already present
+    = step 'Vertragsangebot' [ContractOffer] already present
+    = step 'Abgelehnt' [Rejected] already present
+  template 'Verwaltung DE' already exists (01a080fe-9194-7d56-b1b4-6b6468030dd3) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Vorauswahl' [PreScreening] already present
+      = agent 'Verwaltungs-Vorauswahl' already present
+    = step 'Persönliches Interview' [HumanInterview] already present
+    = step 'Teamentscheidung' [TeamDiscussion] already present
+    = step 'Vertragsangebot' [ContractOffer] already present
+    = step 'Abgelehnt' [Rejected] already present
+  template 'Werkstudenten DE' already exists (01a080fe-94e9-7b99-8851-6f7ab93510c0) - reconciling
+    = step 'Neu' [New] already present
+    = step 'Vorauswahl' [PreScreening] already present
+      = agent 'Werkstudenten-Vorauswahl' already present
+    = step 'Persönliches Gespräch' [HumanInterview] already present
+    = step 'Vertragsangebot' [ContractOffer] already present
+    = step 'Abgelehnt' [Rejected] already present
 
-Jobs (3)
+Jobs (8)
 
   [OK  ] BSP-2026-001 - Senior Backend Engineer (m/w/d)
-         job id: 182687
-         job 'BSP-2026-001' already exists (182687) - reused
-         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
-         verified 7 steps
+         job id: 182845
+         job 'BSP-2026-001' already exists (182845) - reused
+         AutoInit assigned pipeline 'Tech Recruiting DE'
+         verified 7 steps against 'Tech Recruiting DE'
 
   [OK  ] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
-         job id: 182688
-         job 'BSP-2026-002' already exists (182688) - reused
-         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
-         verified 7 steps
+         job id: 182846
+         job 'BSP-2026-002' already exists (182846) - reused
+         AutoInit assigned pipeline 'Werkstudenten DE'
+         verified 5 steps against 'Werkstudenten DE'
+
+  [OK  ] BSP-2026-004 - Account Executive Neukundengeschäft (m/w/d)
+         job id: 182847
+         job 'BSP-2026-004' already exists (182847) - reused
+         AutoInit assigned pipeline 'Vertrieb DE'
+         verified 7 steps against 'Vertrieb DE'
+
+  [OK  ] BSP-2026-005 - Content Marketing Manager (m/w/d)
+         job id: 182848
+         job 'BSP-2026-005' already exists (182848) - reused
+         AutoInit assigned pipeline 'Marketing & Kommunikation DE'
+         verified 7 steps against 'Marketing & Kommunikation DE'
+
+  [OK  ] BSP-2026-006 - Pflegefachkraft Wohnbereich 2 (m/w/d)
+         job id: 182849
+         job 'BSP-2026-006' already exists (182849) - reused
+         AutoInit assigned pipeline 'Pflege DE'
+         verified 5 steps against 'Pflege DE'
+
+  [OK  ] BSP-2026-007 - Sachbearbeitung Empfang und Verwaltung (m/w/d)
+         job id: 182850
+         job 'BSP-2026-007' already exists (182850) - reused
+         AutoInit assigned pipeline 'Verwaltung DE'
+         verified 6 steps against 'Verwaltung DE'
+
+  [WARN] BSP-2026-008 - Küchenhilfe (m/w/d)
+         job id: 182851
+         job 'BSP-2026-008' already exists (182851) - reused
+         AutoInit assigned pipeline 'Standard DE'
+         verified 3 steps against 'Standard DE'
+         WARN template_fallback: no match rule covers this job, so the API fell back to 'Standard DE' (the company default). Add a rule if that is not intended.
 
   [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
          error: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
          valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
 
 ------------------------------------------------------------------------
-ready: 2   needs attention: 1
+ready: 7   needs attention: 1
 
 Not ready to go live:
   - BSP-2026-003: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.

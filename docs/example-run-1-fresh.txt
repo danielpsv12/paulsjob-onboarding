@@ -1,47 +1,139 @@
+$ py onboard.py onboard
+
 ========================================================================
 Paul's Job onboarding run
-correlation id : c1062fb2-90b7-4459-8b6d-7e448766ff72
+correlation id : 1fd33aad-4e51-4eab-8efe-044a02393a9c
 customer       : Beispiel GmbH
-pipeline       : Tech Recruiting DE
-credits        : 998.02 remaining
+pipelines      : Marketing & Kommunikation DE, Pflege DE, Standard DE, Tech Recruiting DE, Vertrieb DE, Verwaltung DE, Werkstudenten DE
+credits        : 991.19 remaining
 ========================================================================
 
 Pipeline template
-  created template 'Tech Recruiting DE' (01a07d00-9069-73a3-883b-a11f8135d7af)
-    + step 'Neu' [New] (01a07d00-9126-79ec-bca7-7ea42d84d224)
-    + step 'Vorauswahl' [PreScreening] (01a07d00-915a-70b5-af89-df3d960eb5af)
+  created template 'Marketing & Kommunikation DE' (01a080fe-81ea-7327-9d8e-afbba1f97ff1)
+    match rules: job_category_id is MarketingAndCommunication
+    + step 'Neu' [New] (01a080fe-8276-726c-a37d-f9bd0fcd90c0)
+    + step 'Vorauswahl' [PreScreening] (01a080fe-82b7-7dd3-9945-eb17f9c9d6d6)
+      + agent 'Marketing-Vorauswahl' (proactive)
+    + step 'Arbeitsproben' [DataCollection] (01a080fe-836e-71aa-9ccb-35b61895ab8b)
+    + step 'Persönliches Interview' [HumanInterview] (01a080fe-83af-78b2-ac72-4ac7cf89c1b7)
+    + step 'Teamentscheidung' [TeamDiscussion] (01a080fe-83f3-76e0-93e3-90bac762ef2a)
+    + step 'Vertragsangebot' [ContractOffer] (01a080fe-8432-7a91-9d81-63be7b392c71)
+    + step 'Abgelehnt' [Rejected] (01a080fe-8472-78ba-acb9-d5778182b673)
+  created template 'Pflege DE' (01a080fe-8538-78a4-b2f3-96e116a40d5d)
+    match rules: job_category_id in CareAndSupport, AmbulatoryCare, NursingAndTherapy, QualifiedNursesWithAdditionalQualifications
+    + step 'Neu' [New] (01a080fe-85c6-7a48-bf07-d49a2a069d83)
+    + step 'Vorauswahl' [PreScreening] (01a080fe-8611-7c5e-816b-bfbae8e0dcdd)
+      + agent 'Pflege-Vorauswahl' (proactive)
+    + step 'Hospitationstag' [RecruitingDay] (01a080fe-86d7-7717-8f36-d370258b3d5f)
+    + step 'Vertragsangebot' [ContractOffer] (01a080fe-8717-753c-9bf1-6172881fb9ae)
+    + step 'Abgelehnt' [Rejected] (01a080fe-8758-7231-b2c6-eb4f6ebe41fe)
+  created template 'Standard DE' (01a080fe-87fb-7a5a-ad6a-fbc33499fb81)
+    match rules: none - reachable only as the company default or by explicit id
+    + step 'Neu' [New] (01a080fe-8885-77f1-9bcb-273edfa3740a)
+    + step 'Zuordnung offen' [TeamDiscussion] (01a080fe-88c6-7871-ad04-f75586089321)
+    + step 'Abgelehnt' [Rejected] (01a080fe-8908-78dd-ad2b-91cc1ce08154)
+  created template 'Tech Recruiting DE' (01a080fe-89c6-7e61-ac5c-7f5e61b855b7)
+    match rules: job_career_level_id in SeniorLevel, MidLevel, Lead AND job_category_id is IT
+    + step 'Neu' [New] (01a080fe-8a54-7b4b-acf2-07c615759ab4)
+    + step 'Vorauswahl' [PreScreening] (01a080fe-8a96-73ce-b4a5-dfe119fc8dce)
       + agent 'Vorauswahl-Agent' (proactive)
-    + step 'KI-Interview' [AIVoiceInterview] (01a07d00-9261-7094-a3be-d9b33cc22c39)
+    + step 'KI-Interview' [AIVoiceInterview] (01a080fe-8b57-7e5a-a046-211e9f97b2f3)
       + agent 'Interview-Agent' (proactive)
-    + step 'Persönliches Interview' [HumanInterview] (01a07d00-935e-75d9-9030-529314dbc6e2)
-    + step 'Teamentscheidung' [TeamDiscussion] (01a07d00-9399-7e3f-8764-a1447968be82)
-    + step 'Vertragsangebot' [ContractOffer] (01a07d00-93f4-721e-99f1-0fee81e0a82b)
-    + step 'Abgelehnt' [Rejected] (01a07d00-947f-7e9e-ba69-5c3c0668a26c)
+    + step 'Persönliches Interview' [HumanInterview] (01a080fe-8c11-7679-a0a1-e03d218f65fd)
+    + step 'Teamentscheidung' [TeamDiscussion] (01a080fe-8c54-7801-ad51-49c674ebffc7)
+    + step 'Vertragsangebot' [ContractOffer] (01a080fe-8c9d-71d7-b95a-dfd3e1e9e1ae)
+    + step 'Abgelehnt' [Rejected] (01a080fe-8cdf-70e7-8974-f7f8118e7ab0)
+  created template 'Vertrieb DE' (01a080fe-8d9c-7314-a16e-430544934685)
+    match rules: job_category_id is Sales
+    + step 'Neu' [New] (01a080fe-8e2a-7d74-a290-507cdb9aff07)
+    + step 'Vorauswahl' [PreScreening] (01a080fe-8e70-7c46-9404-38afd0874cd1)
+      + agent 'Vertriebs-Vorauswahl' (proactive)
+    + step 'KI-Interview' [AIVoiceInterview] (01a080fe-8f36-7b44-9938-b334b2c7e992)
+      + agent 'Vertriebs-Interview' (proactive)
+    + step 'Rollenspiel' [HumanInterview] (01a080fe-8fee-7e8f-b94f-2088c7c9c2bc)
+    + step 'Teamentscheidung' [TeamDiscussion] (01a080fe-9036-7872-a49c-1606470a2329)
+    + step 'Vertragsangebot' [ContractOffer] (01a080fe-9079-7036-b942-3896951cebdc)
+    + step 'Abgelehnt' [Rejected] (01a080fe-90c4-7dac-aba2-9b97d359583d)
+  created template 'Verwaltung DE' (01a080fe-9194-7d56-b1b4-6b6468030dd3)
+    match rules: job_category_id in AdministrationAndSecretariat, CentralAdministration, FacilityAdministration
+    + step 'Neu' [New] (01a080fe-922d-7810-91e1-423a222eb20e)
+    + step 'Vorauswahl' [PreScreening] (01a080fe-926a-7cab-afff-7a1fc8fa9d10)
+      + agent 'Verwaltungs-Vorauswahl' (proactive)
+    + step 'Persönliches Interview' [HumanInterview] (01a080fe-9365-7b6b-97eb-53f1660c8cbb)
+    + step 'Teamentscheidung' [TeamDiscussion] (01a080fe-93b4-7977-b3da-6af61625efe4)
+    + step 'Vertragsangebot' [ContractOffer] (01a080fe-93f3-70be-babc-d8f832d17bf1)
+    + step 'Abgelehnt' [Rejected] (01a080fe-9432-7ee6-b1f8-4579b6a63ff7)
+  created template 'Werkstudenten DE' (01a080fe-94e9-7b99-8851-6f7ab93510c0)
+    match rules: job_career_level_id is EntryLevel AND job_category_id is IT
+    + step 'Neu' [New] (01a080fe-9598-7cd9-957e-83f0859b8245)
+    + step 'Vorauswahl' [PreScreening] (01a080fe-95da-765d-a9e6-84c902b2797a)
+      + agent 'Werkstudenten-Vorauswahl' (proactive)
+    + step 'Persönliches Gespräch' [HumanInterview] (01a080fe-96ba-7249-82d7-13786e46b7e5)
+    + step 'Vertragsangebot' [ContractOffer] (01a080fe-96fb-79f0-88c5-bd7183a2f705)
+    + step 'Abgelehnt' [Rejected] (01a080fe-973d-7224-bbd7-654abbd6f549)
 
-Jobs (3)
+Jobs (8)
 
   [OK  ] BSP-2026-001 - Senior Backend Engineer (m/w/d)
-         job id: 182687
-         created job 'BSP-2026-001' -> 182687
-         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
-         verified 7 steps
+         job id: 182845
+         created job 'BSP-2026-001' -> 182845
+         searchable after 2s
+         AutoInit assigned pipeline 'Tech Recruiting DE'
+         verified 7 steps against 'Tech Recruiting DE'
 
   [OK  ] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
-         job id: 182688
-         created job 'BSP-2026-002' -> 182688
-         initialised pipeline from template 01a07d00-9069-73a3-883b-a11f8135d7af
-         verified 7 steps
+         job id: 182846
+         created job 'BSP-2026-002' -> 182846
+         searchable after 2s
+         AutoInit assigned pipeline 'Werkstudenten DE'
+         verified 5 steps against 'Werkstudenten DE'
+
+  [OK  ] BSP-2026-004 - Account Executive Neukundengeschäft (m/w/d)
+         job id: 182847
+         created job 'BSP-2026-004' -> 182847
+         searchable after 2s
+         AutoInit assigned pipeline 'Vertrieb DE'
+         verified 7 steps against 'Vertrieb DE'
+
+  [OK  ] BSP-2026-005 - Content Marketing Manager (m/w/d)
+         job id: 182848
+         created job 'BSP-2026-005' -> 182848
+         searchable after 1s
+         AutoInit assigned pipeline 'Marketing & Kommunikation DE'
+         verified 7 steps against 'Marketing & Kommunikation DE'
+
+  [OK  ] BSP-2026-006 - Pflegefachkraft Wohnbereich 2 (m/w/d)
+         job id: 182849
+         created job 'BSP-2026-006' -> 182849
+         searchable after 1s
+         AutoInit assigned pipeline 'Pflege DE'
+         verified 5 steps against 'Pflege DE'
+
+  [OK  ] BSP-2026-007 - Sachbearbeitung Empfang und Verwaltung (m/w/d)
+         job id: 182850
+         created job 'BSP-2026-007' -> 182850
+         searchable after 2s
+         AutoInit assigned pipeline 'Verwaltung DE'
+         verified 6 steps against 'Verwaltung DE'
+
+  [WARN] BSP-2026-008 - Küchenhilfe (m/w/d)
+         job id: 182851
+         created job 'BSP-2026-008' -> 182851
+         searchable after 2s
+         AutoInit assigned pipeline 'Standard DE'
+         verified 3 steps against 'Standard DE'
+         WARN template_fallback: no match rule covers this job, so the API fell back to 'Standard DE' (the company default). Add a rule if that is not intended.
 
   [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
          error: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
          valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
 
 ------------------------------------------------------------------------
-ready: 2   needs attention: 1
+ready: 7   needs attention: 1
 
 Not ready to go live:
   - BSP-2026-003: job 'BSP-2026-003' working_hours: 'Vollzeit (40h)' is not a valid value.
   valid options: DualStudies (Duales Studium), Freelancer (Freiberuflich), FullTime (Vollzeit), FullTimeOrPartTime (Vollzeit oder Teilzeit), Intern (Praktikum), Minijob (Minijob), PartTime (Teilzeit), PartTimeOrMinijob (Teilzeit oder Minijob), VocationalTraining (Berufsausbildung)
 ------------------------------------------------------------------------
 
-report written to out\run-20260907T175303Z.json
+report written to out\run-20260908T122918Z.json

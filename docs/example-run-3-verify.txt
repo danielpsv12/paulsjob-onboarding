@@ -1,25 +1,56 @@
+$ py onboard.py verify --no-json
+
 ========================================================================
 Paul's Job onboarding run
-correlation id : 70ca9e69-08fd-42db-947d-cea3872914a7
+correlation id : 51cc36c6-322d-4327-b449-b22cf4aeceab
 customer       : Beispiel GmbH
+pipelines      : Marketing & Kommunikation DE, Pflege DE, Standard DE, Tech Recruiting DE, Vertrieb DE, Verwaltung DE, Werkstudenten DE
 mode           : verify only - nothing is created or changed
 ========================================================================
 
-Jobs (3)
+Jobs (8)
 
   [OK  ] BSP-2026-001 - Senior Backend Engineer (m/w/d)
-         job id: 182687
-         checked 7 steps
+         job id: 182845
+         pipeline 'Tech Recruiting DE'
+         checked 7 steps against 'Tech Recruiting DE'
 
   [OK  ] BSP-2026-002 - Werkstudent Datenanalyse (m/w/d)
-         job id: 182688
-         checked 7 steps
+         job id: 182846
+         pipeline 'Werkstudenten DE'
+         checked 5 steps against 'Werkstudenten DE'
+
+  [OK  ] BSP-2026-004 - Account Executive Neukundengeschäft (m/w/d)
+         job id: 182847
+         pipeline 'Vertrieb DE'
+         checked 7 steps against 'Vertrieb DE'
+
+  [OK  ] BSP-2026-005 - Content Marketing Manager (m/w/d)
+         job id: 182848
+         pipeline 'Marketing & Kommunikation DE'
+         checked 7 steps against 'Marketing & Kommunikation DE'
+
+  [OK  ] BSP-2026-006 - Pflegefachkraft Wohnbereich 2 (m/w/d)
+         job id: 182849
+         pipeline 'Pflege DE'
+         checked 5 steps against 'Pflege DE'
+
+  [OK  ] BSP-2026-007 - Sachbearbeitung Empfang und Verwaltung (m/w/d)
+         job id: 182850
+         pipeline 'Verwaltung DE'
+         checked 6 steps against 'Verwaltung DE'
+
+  [WARN] BSP-2026-008 - Küchenhilfe (m/w/d)
+         job id: 182851
+         pipeline 'Standard DE'
+         checked 3 steps against 'Standard DE'
+         WARN template_fallback: no match rule covers this job, so the API fell back to 'Standard DE' (the company default). Add a rule if that is not intended.
 
   [FAIL] BSP-2026-003 - Head of Engineering (m/w/d)
          error: job does not exist
 
 ------------------------------------------------------------------------
-ready: 2   needs attention: 1
+ready: 7   needs attention: 1
 
 Not ready to go live:
   - BSP-2026-003: job does not exist

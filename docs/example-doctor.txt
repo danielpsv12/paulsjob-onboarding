@@ -1,11 +1,19 @@
+$ py onboard.py doctor
+
 base url       : https://api.paulsjob.ai/dev/v1
-correlation id : f1db91aa-bb96-446d-8a9c-b170af0c5c5f
+correlation id : b4776285-868e-496a-996f-5cd3ae35597c
 company        : Daniel Penner
-person slug    : 47a78330-cbfd-4c30-8567-90aff65b1731
-credits        : 997.36 remaining of 1000
+person slug    : 47a78330-...
+credits        : 988.87 remaining of 1000
 reference data : {'job_categories': 43, 'career_levels': 9, 'employment_types': 16, 'working_hours': 9, 'step_categories': 13}
-default template: Tech Recruiting DE
-templates      : 1
-  - Tech Recruiting DE (01a07d00-9069-73a3-883b-a11f8135d7af)
-jobs           : 2
+default template: Standard DE
+templates      : 7
+  - Marketing & Kommunikation DE (01a080fe-81ea-7327-9d8e-afbba1f97ff1)
+  - Pflege DE (01a080fe-8538-78a4-b2f3-96e116a40d5d)
+  - Standard DE (01a080fe-87fb-7a5a-ad6a-fbc33499fb81)
+  - Tech Recruiting DE (01a080fe-89c6-7e61-ac5c-7f5e61b855b7)
+  - Vertrieb DE (01a080fe-8d9c-7314-a16e-430544934685)
+  - Verwaltung DE (01a080fe-9194-7d56-b1b4-6b6468030dd3)
+  - Werkstudenten DE (01a080fe-94e9-7b99-8851-6f7ab93510c0)
+jobs           : 7
 api calls made : 11
